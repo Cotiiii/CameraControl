@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "cameracontrolv2",
+  "version": "${version}",
+  "name": "CameraControlv2",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cameracontrol/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "org.cotii.cameracontrolv2.client.Cameracontrolv2Client"
+    ],
+    "main": [
+      "org.cotii.cameracontrolv2.Cameracontrolv2"
+    ]
+  },
+  "mixins": [
+    "cameracontrolv2.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
