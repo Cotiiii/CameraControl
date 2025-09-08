@@ -7,17 +7,17 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 
-
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class CameraCommand {
 
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
-        dispatcher.register( //no tengo idea de como arreglar esto
+        dispatcher.register(
                 literal("camera")
                         // Comando básico: /camera set x y z yaw pitch speed smooth
                         .then(literal("set")
@@ -89,10 +89,10 @@ public class CameraCommand {
 
         CameraSystem.getInstance().setCameraPosition(x, y, z, yaw, pitch, speed, smooth);
 
-        context.getSource().sendFeedback(Text.literal(
-                String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f §a| Velocidad: §f%.1f §a| Suave: §f%s",
-                        x, y, z, yaw, pitch, speed, smooth ? "Sí" : "No")
-        ));
+        String message = String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f §a| Velocidad: §f%.1f §a| Suave: §f%s",
+                x, y, z, yaw, pitch, speed, smooth ? "Sí" : "No");
+
+        context.getSource().sendFeedback(Text.literal(message));
 
         return 1;
     }
@@ -107,10 +107,10 @@ public class CameraCommand {
 
         CameraSystem.getInstance().setCameraPosition(x, y, z, yaw, pitch, speed, true);
 
-        context.getSource().sendFeedback(Text.literal(
-                String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f §a| Velocidad: §f%.1f §a| Suave: §fSí",
-                        x, y, z, yaw, pitch, speed)
-        ));
+        String message = String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f §a| Velocidad: §f%.1f §a| Suave: §fSí",
+                x, y, z, yaw, pitch, speed);
+
+        context.getSource().sendFeedback(Text.literal(message));
 
         return 1;
     }
@@ -124,10 +124,10 @@ public class CameraCommand {
 
         CameraSystem.getInstance().setCameraPosition(x, y, z, yaw, pitch, 1.0f, true);
 
-        context.getSource().sendFeedback(Text.literal(
-                String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f",
-                        x, y, z, yaw, pitch)
-        ));
+        String message = String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f",
+                x, y, z, yaw, pitch);
+
+        context.getSource().sendFeedback(Text.literal(message));
 
         return 1;
     }
@@ -140,10 +140,10 @@ public class CameraCommand {
 
         CameraSystem.getInstance().setCameraPosition(x, y, z, yaw, 0.0f, 1.0f, true);
 
-        context.getSource().sendFeedback(Text.literal(
-                String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Yaw: §f%.1f",
-                        x, y, z, yaw)
-        ));
+        String message = String.format("§aCámara movida a: §f%.2f %.2f %.2f §a| Yaw: §f%.1f",
+                x, y, z, yaw);
+
+        context.getSource().sendFeedback(Text.literal(message));
 
         return 1;
     }
@@ -155,9 +155,9 @@ public class CameraCommand {
 
         CameraSystem.getInstance().setCameraPosition(x, y, z, 0.0f, 0.0f, 1.0f, true);
 
-        context.getSource().sendFeedback(Text.literal(
-                String.format("§aCámara movida a: §f%.2f %.2f %.2f", x, y, z)
-        ));
+        String message = String.format("§aCámara movida a: §f%.2f %.2f %.2f", x, y, z);
+
+        context.getSource().sendFeedback(Text.literal(message));
 
         return 1;
     }
@@ -235,7 +235,7 @@ public class CameraCommand {
         return executeFollowPlayer(context, playerName, offsetX, offsetY, offsetZ, 0.0f, 0.0f, 1.0f, true);
     }
 
-    // Metodo auxiliar para ejecutar follow player
+    // Método auxiliar para ejecutar follow player
     private static int executeFollowPlayer(CommandContext<FabricClientCommandSource> context, String playerName,
                                            double offsetX, double offsetY, double offsetZ,
                                            float yaw, float pitch, float speed, boolean smooth) {
@@ -262,10 +262,10 @@ public class CameraCommand {
 
         CameraSystem.getInstance().followPlayer(String.valueOf(targetPlayer), offsetX, offsetY, offsetZ, yaw, pitch, speed, smooth);
 
-        context.getSource().sendFeedback(Text.literal(
-                String.format("§aCámara siguiendo a §f%s §acon offset: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f",
-                        playerName, offsetX, offsetY, offsetZ, yaw, pitch)
-        ));
+        String message = String.format("§aCámara siguiendo a §f%s §acon offset: §f%.2f %.2f %.2f §a| Rotación: §f%.1f %.1f",
+                playerName, offsetX, offsetY, offsetZ, yaw, pitch);
+
+        context.getSource().sendFeedback(Text.literal(message));
 
         return 1;
     }
@@ -280,15 +280,10 @@ public class CameraCommand {
             String mode = cameraSystem.getCurrentMode().name();
             String following = cameraSystem.isFollowingPlayer() ? "Sí" : "No";
 
-            context.getSource().sendFeedback(Text.literal(
-                    String.format("§aCámara: §fActiva | Modo: §f%s §a| Siguiendo jugador: §f%s",
-                            mode, following)
-            ));
+            String message = String.format("§aCámara: §fActiva | Modo: §f%s §a| Siguiendo jugador: §f%s", mode, following);
+            context.getSource().sendFeedback(Text.literal(message));
         }
 
         return 1;
-    }
-
-    public static void register() {
     }
 }
